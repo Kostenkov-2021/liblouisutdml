@@ -1,8 +1,8 @@
 # liblouis: Russian mathematical Braille definitions
 #
-# Mathematical notation follows GOST R 58511-2019, with documented
-# extensions from the 2010 Russian manual. This compatibility copy is kept
-# inside liblouisutdml so the Russian profile works with Liblouis 3.38.0.
+# This is a compatibility backport of the current Liblouis ru-math.uti input
+# contract. Formatter-only extensions which have not yet entered upstream are
+# identified below and do not override upstream character rules.
 #
 # Copyright (C) 2020-2022, 2025 Andrey Yakuboy <braille@yakuboy.ru>
 # Copyright (C) 2026 Danil Kostenkov <danilkostenkov38@gmail.com>
@@ -12,42 +12,42 @@
 
 # Semantic characters for structured mathematics.
 
-math \xf400 0
-math \xf401 0
-math \xf402 0
-math \xf403 0
+noback math \xf400 0
+noback math \xf401 0
+noback math \xf402 0
+noback math \xf403 0
 
 replace \xf32e
 replace \xf32f
-math \xf328 6
-math \xf329 5
+noback math \xf328 6
+noback math \xf329 5
 
 # Right/left lower and upper indices.
-math \xf320 16
+noback math \xf320 16
 replace \xf401\xf320
 noback always \xf402\xf320 156
-math \xf321 34
+noback math \xf321 34
 replace \xf401\xf321
 noback always \xf402\xf321 156
 
 # Exactly-below and exactly-above scripts.
-math \xf322 46-16
+noback math \xf322 46-16
 noback always \xf402\xf322 156
-math \xf323 46-34
+noback math \xf323 46-34
 noback always \xf402\xf323 156
 
 # Roots.
-math \xf32a 146
-noback always \xf403\xf32a 146-34
-math \xf32b 1456
-math \xf32c 146-34
+noback math \xf32a 146
+noback always \xf403\xf32a 146
+noback math \xf32b 1456
+noback math \xf32c 146-34
 
 # Fractions and formatter-supplied numeric structure.
-math \xf500 23
-math \xf501 56
-math \xf502 6-34
-math \xf503 1256
-noback always \xf504 3456
+noback math \xf500 23
+noback math \xf501 56
+noback math \xf502 6-34
+noback math \xf503 1256
+replace \xf504
 noback always \xf505 6-3
 noback always \xf506 5
 noback always \xf507 6
@@ -82,18 +82,19 @@ noback always \xf568 125
 noback always \xf569 24
 
 # Suppress the number sign for digits inside explicitly structured fractions.
-noback always \xf580 245
-noback always \xf581 1
-noback always \xf582 12
-noback always \xf583 14
-noback always \xf584 145
-noback always \xf585 15
-noback always \xf586 124
-noback always \xf587 1245
-noback always \xf588 125
-noback always \xf589 24
+# F401 + an ordinary digit is the current Liblouis contract.
+noback always \xf4010 245
+noback always \xf4011 1
+noback always \xf4012 12
+noback always \xf4013 14
+noback always \xf4014 145
+noback always \xf4015 15
+noback always \xf4016 124
+noback always \xf4017 1245
+noback always \xf4018 125
+noback always \xf4019 24
 
-# Brackets with explicit GOST recognition dots.
+# Brackets with explicit recognition dots.
 noback always \xf508 6-12356
 noback always \xf509 6-23456
 noback always \xf50a 4-246
@@ -142,9 +143,9 @@ noback always \xf54e 36
 
 # Vector notation.
 noback always \xf550 25-2
-noback always \xf551 46-25-2
+noback always \xf551 45-25-2
 noback always \xf552 25
-noback always \xf553 46-25
+noback always \xf553 45-25
 noback always \xf557 456-345
 noback always \xf558 456-246
 noback always \xf559 456-145
@@ -200,7 +201,7 @@ replace \xf401
 replace \xf402
 replace \xf403
 
-# General mathematical symbols corrected to GOST R 58511-2019.
+# General mathematical symbols synchronized with current ru-math.uti.
 noback math + 235
 nofor math + 56-235
 noback math \x2212 36
@@ -346,18 +347,19 @@ noback math \x215c 3456-14-236
 noback math \x215d 3456-15-236
 noback math \x215e 3456-1245-236
 noback math \x2189 3456-245-25
-noback math \x2044 6-34
+noback math \x2044 1256
 noback math \x2236 1256
 
-# Arrows from GOST R 58511-2019.
-math \x2190 5-25
-math \x2191 56-34
-math \x2192 25-2
-math \x2193 45-16
-math \x27f5 246-25
-math \x27f6 25-135
+# Standard arrows. Short arrows used as marks after letters have distinct
+# semantic tokens F54B/F54C in the current Liblouis contract.
+noback math \x2190 246-25
+noback math \x2191 56-34
+noback math \x2192 25-135
+noback math \x2193 45-16
+noback math \x27f5 246-25
+noback math \x27f6 25-135
 
-# Compatibility-only arrows not specified by the checked Russian sources.
+# Additional arrows from the current Liblouis table.
 noback math \x2194 246-25-135
 noback math \x2195 1456-3
 noback math \x2196 5-26

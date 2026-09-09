@@ -51,7 +51,7 @@ generic mrow
 # structure. Classification is local and does not depend on MathCAT.
 russianfraction mfrac
 
-# GOST 6.3.3 recognition is contextual. The C handlers inspect both neighbours
+# Bracket recognition is contextual. The C handlers inspect both neighbours
 # of each bracket and then apply a recognition point to both members of a pair
 # whenever either member is ambiguous.
 russianfenced mfenced
@@ -98,15 +98,15 @@ generic mspace
 generic &xpath(//math:mo[@linebreak='newline'][(@lspace='0' or @lspace='0em') and (@rspace='0' or @rspace='0em')]) \*\xf506
 generic &xpath(//math:mo[@linebreak='newline'][not((@lspace='0' or @lspace='0em') and (@rspace='0' or @rspace='0em'))]) \*\xf507
 
-# The 2010 punctuation rule complements GOST's separator definition: point 6
+# The mathematical punctuation separator (dot 6)
 # precedes punctuation inside or at the end of mathematics. Do not insert it
 # for a decimal comma split across MathML tokens or for a comma after ellipsis.
 generic &xpath(//math:mo[string-length(normalize-space(.))=1][contains('.,;:!?',normalize-space(.))][not(normalize-space(.)=',' and preceding-sibling::*[1][self::math:mn] and following-sibling::*[1][self::math:mn])][not(normalize-space(.)=',' and preceding-sibling::*[1][self::math:mo and (normalize-space(.)='…' or normalize-space(.)='...')])]) \xf328,\*
 generic &xpath(//math:mo[@linebreak='newline'][string-length(normalize-space(.))=1][contains('.,;:!?',normalize-space(.))][(@lspace='0' or @lspace='0em') and (@rspace='0' or @rspace='0em')]) \xf328,\*\xf506
 generic &xpath(//math:mo[@linebreak='newline'][string-length(normalize-space(.))=1][contains('.,;:!?',normalize-space(.))][not((@lspace='0' or @lspace='0em') and (@rspace='0' or @rspace='0em'))]) \xf328,\*\xf507
 
-# GOST R 58511-2019 takes priority over the old 2010 italic sign (146).
-# The signs are paired around the affected MathML token or style span.
+# Typeface signs follow the current Liblouis implementation. They are paired
+# around the affected MathML token or style span.
 generic mi,mathvariant,italic \xf590,\*\xf590
 generic mi,mathvariant,bold \xf591,\*\xf591
 generic mi,mathvariant,bold-italic \xf591\xf590,\*\xf590\xf591

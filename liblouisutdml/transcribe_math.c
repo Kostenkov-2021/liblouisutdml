@@ -466,7 +466,13 @@ insertUnnumberedInteger (xmlNode * node)
     return;
   for (k = 0; content[k] != 0; k++)
     if (content[k] >= '0' && content[k] <= '9')
-      insertMathCharacter (0xf580 + content[k] - '0');
+      {
+	/* ru-math.uti uses the shared F401 semantic prefix to suppress the
+	 * number sign. Emit the printable digit after the prefix so the stream
+	 * matches the current Liblouis structured-math contract. */
+	insertMathCharacter (0xf401);
+	insertMathCharacter (content[k]);
+      }
   xmlFree (content);
 }
 
@@ -642,34 +648,29 @@ insertPeriodicDigits (const xmlChar *content)
 }
 
 static void
-insertUnnumberedDecimalPart (const xmlChar *content, int length)
-{
-  int k;
-  for (k = 0; content != NULL && content[k] != 0 &&
-       (length < 0 || k < length); k++)
-    if (content[k] >= '0' && content[k] <= '9')
-      insertMathCharacter (0xf560 + content[k] - '0');
-}
-
-static void
 insertPeriodicPrefix (const xmlChar *content, int length)
 {
   int comma = -1;
   int k;
 
+  /* Current ru-math.uti defines F504 as an empty structural boundary. Feed
+   * the integer prefix to the ordinary numeric rules so they supply the
+   * single number sign. F55A keeps a trailing decimal comma numeric even when
+   * the periodic digits live in a separate MathML token. */
   for (k = 0; k < length; k++)
     if (content[k] == ',')
       {
 	comma = k;
 	break;
       }
-  insertMathCharacter (0xf504);
-  insertUnnumberedDecimalPart (content, comma < 0 ? length : comma);
+  for (k = 0; k < (comma < 0 ? length : comma); k++)
+    insertMathCharacter (content[k]);
   if (comma >= 0)
     {
       insertMathCharacter (0xf55a);
-      insertUnnumberedDecimalPart (content + comma + 1,
-				   length - comma - 1);
+      for (k = comma + 1; k < length; k++)
+	if (content[k] >= '0' && content[k] <= '9')
+	  insertMathCharacter (0xf560 + content[k] - '0');
     }
 }
 
@@ -1186,9 +1187,8 @@ russianLongDivision (xmlNode * node)
   finishRussianMathTable (matrixStyle);
 }
 
-/* GOST R 58511-2019 6.3.2, 6.3.4 and 6.3.5 use lowered digits
- * without a number sign or a closing sign for an integer denominator,
- * root index, exponent or subscript. */
+/* Current ru-math.uti uses lowered digits without a number sign or a closing
+ * sign for an integer denominator, root index, exponent or subscript. */
 static void
 russianIntegerStructure (xmlNode * node)
 {

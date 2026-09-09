@@ -1,41 +1,13 @@
-# Russian literary and mathematical Braille for Liblouis 3.38.0.
+# Russian literary and mathematical Braille for current Liblouis.
 #
 # ru-litbrl.ctb supplies Russian text, numeric modes and alphabet switching.
-# russian-math.uti backports the complete corrected mathematical layer that is
-# not yet present in the 3.38.0 release.
+# russian-math.uti carries formatter-only extensions and mirrors the current
+# structured-math contract used by ru-litbrl.ctb.
 
 include ru-litbrl.ctb
 include russian-math.uti
 
-# Liblouis keeps the first character definition from ru-litbrl.ctb 3.38.0.
-# Rewrite its known conflicting characters before translation so the corrected
-# GOST mappings below are unambiguous.
-noback correct "\x00d7" "\xf592"
-noback correct "\x00b7" "\xf593"
-noback correct "\x2215" "\xf594"
-noback correct "\x2190" "\xf595"
-noback correct "\x2192" "\xf596"
-noback correct "\x27f5" "\xf597"
-noback correct "\x27f6" "\xf598"
-
-noback always \xf592 236
-noback always \xf593 3
-noback always \xf594 356
-noback always \xf595 5-25
-noback always \xf596 8-25-2
-noback always \xf597 0-246-25-0
-noback always \xf598 0-25-135-0
-
-# Dot 8 is a temporary marker that lets pass 2 remove the space inserted by
-# the obsolete U+2192 spacing rule before exposing the corrected small arrow.
-noback pass2 @0-8-25-2 @25-2
-noback pass2 @8-25-2 @25-2
-
-attribute russiansmallarrow \xf595\xf596
-noback correct [$s]%russiansmallarrow ?
-noback correct %russiansmallarrow[$s] ?
-
-# GOST digit grouping in mathematical numbers. The source may use either
+# Digit grouping in mathematical numbers. The source may use either
 # no-break space character; both become the formatter contract token F50C.
 noback correct _$d["\x00a0"]$d "\xf50c"
 noback correct _$d["\x202f"]$d "\xf50c"
